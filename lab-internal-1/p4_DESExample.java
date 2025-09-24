@@ -1,5 +1,4 @@
 // 4.Write a java program to implement the DES algorithm logic? 
-// Program: 
 
 import java.util.Base64;
 import javax.crypto.Cipher;
@@ -8,9 +7,9 @@ import javax.crypto.SecretKey;
 
 public class p4_DESExample {
 
-    public static SecretKey generateKey() throws Exception {
+    public static SecretKey generateKey(int size) throws Exception {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
-        keyGenerator.init(56); // DES uses a 56-bit key size 
+        keyGenerator.init(size); // DES uses a 56-bit sub key size 
         return keyGenerator.generateKey();
     }
 
@@ -30,7 +29,7 @@ public class p4_DESExample {
 
     public static void main(String[] args) {
         try {
-            SecretKey secretKey = generateKey();
+            SecretKey secretKey = generateKey(56); // DES uses a 56-bit sub key size 
             String plaintext = "Hello, World!";
             System.out.println("Original Text: " + plaintext);
             String encryptedText = encrypt(plaintext, secretKey);
