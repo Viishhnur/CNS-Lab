@@ -17,7 +17,7 @@ public class p5_BlowfishExample {
     public static String encrypt(String plaintext, SecretKey key) throws Exception {
         Cipher cipher = Cipher.getInstance("Blowfish");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encryptedBytes = cipher.doFinal(plaintext.getBytes());
+        byte[] encryptedBytes = cipher.doFinal(plaintext.getBytes()); // this may throw IllegalBlockSizeException, BadPaddingException
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
