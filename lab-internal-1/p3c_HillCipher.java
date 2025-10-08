@@ -4,8 +4,8 @@
 import java.util.Scanner;
 
 public class p3c_HillCipher {
-// Function to perform matrix multiplication 
-
+    
+    // Function to perform matrix multiplication 
     public static int[] matrixMultiply(int[][] keyMatrix, int[] messageVector) {
         int[] result = new int[messageVector.length];
         for (int i = 0; i < keyMatrix.length; i++) {
@@ -17,8 +17,8 @@ public class p3c_HillCipher {
         }
         return result;
     }
-// Function to find the modular inverse of a number 
-
+    
+    // Function to find the modular inverse of a number 
     public static int modInverse(int a, int m) {
         a = a % m;
         for (int x = 1; x < m; x++) {
@@ -28,8 +28,8 @@ public class p3c_HillCipher {
         }
         return 1;
     }
-// Function to calculate the inverse of a 2x2 matrix 
-
+    
+    // Function to calculate the inverse of a 2x2 matrix 
     public static int[][] inverseKeyMatrix(int[][] keyMatrix) {
         int determinant = (keyMatrix[0][0] * keyMatrix[1][1] - keyMatrix[0][1] * keyMatrix[1][0]) % 26;
         determinant = (determinant + 26) % 26;
@@ -41,8 +41,8 @@ public class p3c_HillCipher {
         inverseMatrix[1][0] = (-keyMatrix[1][0] * inverseDeterminant + 26) % 26;
         return inverseMatrix;
     }
-// Function to convert a string into an integer vector 
-
+    
+    // Function to convert a string into an integer vector 
     public static int[] stringToVector(String text) {
         int[] vector = new int[text.length()];
         for (int i = 0; i < text.length(); i++) {
@@ -50,8 +50,8 @@ public class p3c_HillCipher {
         }
         return vector;
     }
-// Function to convert an integer vector into a string 
-
+    
+    // Function to convert an integer vector into a string 
     public static String vectorToString(int[] vector) {
         StringBuilder text = new StringBuilder();
         for (int i : vector) {
@@ -59,15 +59,15 @@ public class p3c_HillCipher {
         }
         return text.toString();
     }
-// Function to encrypt the plaintext 
-
+    
+    // Function to encrypt the plaintext 
     public static String encrypt(String plaintext, int[][] keyMatrix) {
         int[] messageVector = stringToVector(plaintext);
         int[] encryptedVector = matrixMultiply(keyMatrix, messageVector);
         return vectorToString(encryptedVector);
     }
-// Function to decrypt the ciphertext 
-
+    
+    // Function to decrypt the ciphertext 
     public static String decrypt(String ciphertext, int[][] keyMatrix) {
         int[][] inverseMatrix = inverseKeyMatrix(keyMatrix);
         int[] messageVector = stringToVector(ciphertext);
@@ -76,24 +76,30 @@ public class p3c_HillCipher {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-// Input: 2x2 key matrix 
-        int[][] keyMatrix = new int[2][2];
-        System.out.println("Enter the 2x2 key matrix (values between 0 and 25):");
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                keyMatrix[i][j] = scanner.nextInt();
+        int[][] keyMatrix;
+        String plaintext;
+
+        try(Scanner sc = new Scanner(System.in)){
+            keyMatrix = new int[2][2];
+
+            System.out.println("Enter the 2x2 key matrix (values between 0 and 25):");
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < 2; j++) {
+                    keyMatrix[i][j] = sc.nextInt();
+                }
             }
+
+            // Input: plaintext (must be of length 2 for simplicity) 
+            System.out.println("Enter the plaintext (length 2, uppercase letters only):");
+            plaintext = sc.next().toUpperCase();
         }
-// Input: plaintext (must be of length 2 for simplicity) 
-        System.out.println("Enter the plaintext (length 2, uppercase letters only):");
-        String plaintext = scanner.next().toUpperCase();
-// Encrypt the plaintext 
+       
+        // Encrypt the plaintext 
         String ciphertext = encrypt(plaintext, keyMatrix);
         System.out.println("Encrypted Text: " + ciphertext);
-// Decrypt the ciphertext 
+
+        // Decrypt the ciphertext 
         String decryptedText = decrypt(ciphertext, keyMatrix);
         System.out.println("Decrypted Text: " + decryptedText);
-        scanner.close();
     }
 }
