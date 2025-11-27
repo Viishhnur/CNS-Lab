@@ -9,13 +9,13 @@ public class p7_RC4 {
     private byte[] S = new byte[256];
     private int x = 0;
     private int y = 0;
-// Constructor to initialize the key 
-
+    
+    // Constructor to initialize the key
     public p7_RC4(byte[] key) {
         init(key);
     }
-// Initialize the permutation in the array S 
-
+    
+    // Initialize the permutation in the array S
     private void init(byte[] key) {
         int keyLength = key.length;
         for (int i = 0; i < 256; i++) {
@@ -27,15 +27,15 @@ public class p7_RC4 {
             swap(i, j);
         }
     }
-// Swap elements in the array S 
-
+    
+    // Swap elements in the array S
     private void swap(int i, int j) {
         byte temp = S[i];
         S[i] = S[j];
         S[j] = temp;
     }
-// Generate the key stream and perform encryption/decryption 
-
+    
+    // Generate the key stream and perform encryption/decryption
     public byte[] encrypt(byte[] plaintext) {
         byte[] ciphertext = new byte[plaintext.length];
         for (int i = 0; i < plaintext.length; i++) {
@@ -43,8 +43,8 @@ public class p7_RC4 {
         }
         return ciphertext;
     }
-// Generate the next byte of the key stream 
-
+    
+    // Generate the next byte of the key stream
     private byte keyItem() {
         x = (x + 1) & 0xFF;
         y = (y + S[x]) & 0xFF;
@@ -52,19 +52,24 @@ public class p7_RC4 {
         return S[(S[x] + S[y]) & 0xFF];
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a key for RC4 encryption (e.g., mysecretkey):");
-        String keyString = scanner.nextLine();
-        byte[] key = keyString.getBytes();
-        p7_RC4 rc4 = new p7_RC4(key);
-        String plaintext = "Hello World";
-        System.out.println("Original Text: " + plaintext);
-        byte[] ciphertext = rc4.encrypt(plaintext.getBytes());
+    public static void main(String... rc4Algo) {
+        String plainText;
+        try(Scanner sc = new Scanner(System.in)){
+            System.out.println("Enter a key for RC4 encryption (e.g., mysecretkey):");
+            plainText = sc.nextLine();
+        }
+
+        // Creating the RC4 object for encryption
+        p7_RC4 rc4 = new p7_RC4(plainText.getBytes());
+        byte[] ciphertext = rc4.encrypt(plainText.getBytes());
+
+        // Decrypting the ciphertext
+        p7_RC4 rc4Decrypt = new p7_RC4(plainText.getBytes()); // use new object to decrypt
+        byte[] decryptedText = rc4Decrypt.encrypt(ciphertext); // RC4 is symmetric, so encryption and decryption are the
+        // same
+
+        System.out.println("Original Text: " + plainText);
         System.out.println("Encrypted Text: " + new String(ciphertext));
-// Decrypting the ciphertext 
-        byte[] decryptedText = rc4.encrypt(ciphertext); // RC4 is symmetric, so encryption and decryption are the same 
         System.out.println("Decrypted Text: " + new String(decryptedText));
-        scanner.close();
     }
 }
