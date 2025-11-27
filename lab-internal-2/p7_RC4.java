@@ -1,8 +1,7 @@
-// 7.Write a java program the RC4 logic using cryptography; encrypt the text "Hello World" using 
-// Blowfish. Create your own key using java key tool? 
-// Program: 
+// 7.Write a java program the RC4 logic using cryptography; encrypt the text "Hello World" using RC4. Create your own key using java key tool? 
 
-import java.util.*;
+import java.util.Base64;
+import java.util.Scanner;
 
 public class p7_RC4 {
 
@@ -53,23 +52,28 @@ public class p7_RC4 {
     }
 
     public static void main(String... rc4Algo) {
-        String plainText;
+        String keyString;
+        String plaintext;
+        
         try(Scanner sc = new Scanner(System.in)){
-            System.out.println("Enter a key for RC4 encryption (e.g., mysecretkey):");
-            plainText = sc.nextLine();
+            System.out.print("Enter encryption key:");
+            keyString = sc.nextLine();
+
+            System.out.print("Enter Plain text :");
+            plaintext = sc.nextLine();
         }
 
-        // Creating the RC4 object for encryption
-        p7_RC4 rc4 = new p7_RC4(plainText.getBytes());
-        byte[] ciphertext = rc4.encrypt(plainText.getBytes());
+        // Create RC4 instance with the key 
+        p7_RC4 rc4 = new p7_RC4(keyString.getBytes());
+        byte[] ciphertext = rc4.encrypt(plaintext.getBytes());
+        
+        p7_RC4 rc4Decrypt = new p7_RC4(keyString.getBytes());
+        byte[] decrypted = rc4Decrypt.encrypt(ciphertext);
 
-        // Decrypting the ciphertext
-        p7_RC4 rc4Decrypt = new p7_RC4(plainText.getBytes()); // use new object to decrypt
-        byte[] decryptedText = rc4Decrypt.encrypt(ciphertext); // RC4 is symmetric, so encryption and decryption are the
-        // same
+        
+        System.out.println("Original : " + plaintext);
+        System.out.println("Encrypted: " + Base64.getEncoder().encodeToString(ciphertext));
+        System.out.println("Decrypted: " + new String(decrypted));
 
-        System.out.println("Original Text: " + plainText);
-        System.out.println("Encrypted Text: " + new String(ciphertext));
-        System.out.println("Decrypted Text: " + new String(decryptedText));
     }
 }
