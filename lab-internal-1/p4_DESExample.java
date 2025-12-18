@@ -1,9 +1,7 @@
 // 4.Write a java program to implement the DES algorithm logic? 
 
 import java.util.Base64;
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 
 public class p4_DESExample {
 
